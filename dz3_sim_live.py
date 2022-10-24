@@ -13,13 +13,11 @@ job_list = {
  "C++ developer": {"salary": 45, "gladness_less": 25},
  "Rust developer": {"salary": 70, "gladness_less": 1},
 }
-
 dog_breeds = {
     "Labrador": {"feed": 20, "price": 50, "playfulness": 12},
     "Bulldogs": {"feed": 20, "price": 50, "playfulness": 7},
     "Beagle": {"feed": 15, "price": 45, "playfulness": 15},
 }
-
 cat_breeds = {
     "Siamese": {"feed": 10, "price": 25, "playfulness": 10},
     "Bengal": {"feed": 7, "price": 30, "playfulness": 8},
