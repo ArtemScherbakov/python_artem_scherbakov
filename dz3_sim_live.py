@@ -14,18 +14,50 @@ job_list = {
  "Rust developer": {"salary": 70, "gladness_less": 1},
 }
 
+dog_breeds = {
+    "Labrador": {"feed": 20, "price": 50, "playfulness": 12},
+    "Bulldogs": {"feed": 20, "price": 50, "playfulness": 7},
+    "Beagle": {"feed": 15, "price": 45, "playfulness": 15},
+}
+
+cat_breeds = {
+    "Siamese": {"feed": 10, "price": 25, "playfulness": 10},
+    "Bengal": {"feed": 7, "price": 30, "playfulness": 8},
+    "Persian": {"feed": 12, "price": 20, "playfulness": 9},
+}
+
 
 class Human:
-    def __init__(self, name="Human", job=None, home=None, car=None):
+    def __init__(self, name="Human", job=None, home=None, car=None, dog=None, cat=None):
         self.name = name
-        self.money = 100
+        self.money = 180
         self.gladness = 50
         self.satiety = 50
         self.job = job
         self.car = car
         self.home = home
+        self.dog = dog
         self.power = 30
         self.fatigue = 0
+        self.cat = cat
+
+    def time_with_dog(self):
+        if self.dog.feed < 5:
+            print("My dog want eat! I feed my dog.")
+            self.dog.eat()
+        else:
+            print("My dog wants to walk!")
+            self.dog.walk()
+        self.gladness += 1
+
+    def time_with_cat(self):
+        if self.cat.feed < 4:
+            print("My cat want eat! I feed my cat.")
+            self.cat.eat()
+        else:
+            print("My cat wants to play!")
+            self.cat.play()
+        self.gladness += 1
 
     def meet_with_fr(self):
         self.money -= 2
@@ -73,6 +105,14 @@ class Human:
 
     def get_car(self):
         self.car = Auto(brands_of_car)
+
+    def buy_dog(self):
+        self.dog = Dog(dog_breeds)
+        self.money -= self.dog.price
+
+    def buy_cat(self):
+        self.cat = Cat(cat_breeds)
+        self.money -= self.cat.price
 
     def get_job(self):
         if self.car.drive():
@@ -168,6 +208,15 @@ class Human:
         print(f"{car_indexes:^50}", "\n")
         print(f"Fuel – {self.car.fuel}")
         print(f"Strength – {self.car.strength}")
+        dog_indexes = f"{self.dog.breed} dog indexes"
+        print(f"{dog_indexes:^50}", "\n")
+        print(f"Feed - {self.dog.feed}")
+        print(f"Playfulness - {self.dog.playfulness}")
+        cat_indexes = f"{self.cat.breed} cat indexes"
+        print(f"{cat_indexes:^50}", "\n")
+        print(f"Feed - {self.cat.feed}")
+        print(f"Playfulness - {self.cat.playfulness}")
+
 
     def is_alive(self):
         if self.gladness < 0:
@@ -186,14 +235,20 @@ class Human:
         if self.home is None:
             print("Settled in the house")
             self.get_home()
+        if self.dog is None:
+            self.buy_dog()
+            print(f"I bought a dog {self.dog.breed} for {self.dog.price} $")
+        if self.cat is None:
+            self.buy_cat()
+            print(f"I bought a cat {self.cat.breed} for {self.cat.price} $")
         if self.car is None:
             self.get_car()
-            print(f"I bought a car{self.car.brand}")
+            print(f"I bought a car {self.car.brand}")
         if self.job is None:
             self.get_job()
             print(f"I don't have a job, I'm going to get a job {self.job.job} with salary {self.job.salary}")
         self.days_indexes(day)
-        dice = random.randint(1, 8)
+        dice = random.randint(1, 10)
         if self.satiety < 20:
             print("I'll go eat")
             self.eat()
@@ -240,7 +295,42 @@ class Human:
         elif dice == 8:
             print("I'll meet my friends")
             self.meet_with_fr()
+        elif dice == 9:
+            print(f"Time for my {self.dog.breed}")
+            self.time_with_dog()
+        elif dice == 10:
+            print(f"Time for my {self.cat.breed}")
+            self.time_with_cat()
 
+
+class Dog():
+    def __init__(self, dog_breeds):
+        self.breed = random.choice(list(dog_breeds))
+        self.feed = dog_breeds[self.breed]["feed"]
+        self.price = dog_breeds[self.breed]["price"]
+        self.playfulness = dog_breeds[self.breed]["playfulness"]
+
+    def walk(self):
+        self.feed -= 2
+        self.playfulness += 2
+
+    def eat(self):
+        self.feed += 4
+
+
+class Cat():
+    def __init__(self, cat_breeds):
+        self.breed = random.choice(list(cat_breeds))
+        self.feed = cat_breeds[self.breed]["feed"]
+        self.price = cat_breeds[self.breed]["price"]
+        self.playfulness = cat_breeds[self.breed]["playfulness"]
+
+    def play(self):
+        self.feed -= 1
+        self.playfulness += 2
+
+    def eat(self):
+        self.feed += 3
 
 
 class Auto:
